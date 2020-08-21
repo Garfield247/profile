@@ -2,7 +2,7 @@
 
 thisdir=$(cd $(dirname $0); pwd)
 echo $thisdir
-declare -A profiles
+declare -a profiles
 profiles=(
     [nvim]="$HOME/.config/nvim/init.vim"
     [tmux]="$HOME/.tmux.conf"
