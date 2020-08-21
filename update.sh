@@ -6,6 +6,8 @@ declare -A profiles
 profiles=(
     [nvim]="$HOME/.config/nvim/init.vim"
     [tmux]="$HOME/.tmux.conf"
+    [zshrc]="$HOME/.zshrc"
+    [bashrc]="$HOME/.bash_profile"
 )
 
 for pf in $(echo ${!profiles[*]})
