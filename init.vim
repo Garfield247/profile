@@ -1,3 +1,21 @@
+ "_______________________________________________________
+"//                                                     \\
+"||      ____           _     __  __                    ||
+"||     / ___|   __ _  | |_  |  \/  |   __ _   _ __     ||
+"||    | |      / _` | | __| | |\/| |  / _` | | '_ \    ||
+"||    | |___  | (_| | | |_  | |  | | | (_| | | | | |   ||
+"||     \____|  \__,_|  \__| |_|  |_|  \__,_| |_| |_|   ||
+"||                                                     ||
+"||         __     _____ __  __ ____   ____             ||
+"||         \ \   / /_ _|  \/  |  _ \ / ___|            ||
+"||          \ \ / / | || |\/| | |_) | |                ||
+"||           \ V /  | || |  | |  _ <| |___             ||
+"||            \_/  |___|_|  |_|_| \_\\____|            ||
+"||                                                     ||
+"\\_____________________________________________________//
+ "\_____________________________________________________/
+
+
 let mapleader=" "
 
 set nocompatible
@@ -106,20 +124,21 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'irblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 
-"Plug 'jiangmiao/auto-pairs'
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-fugitive'
 Plug 'Yggdroot/indentLine'
 Plug 'godlygeek/tabular'
 Plug 'luochen1990/rainbow'
-Plug 'plasticboy/vim-markdown'
-Plug 'suan/vim-instant-markdown'
+"Plug 'plasticboy/vim-markdown'
+"Plug 'suan/vim-instant-markdown'
 "Plug 'majutsushi/tagbar'
-Plug 'Lokaltog/vim-easymotion'
+"Plug 'Lokaltog/vim-easymotion'
 Plug 'fatih/vim-go'
 Plug 'itchyny/vim-cursorword'
-Plug 'lfv89/vim-interestingwords'
+Plug 'tpope/vim-surround'
+Plug 'voldikss/vim-codelf'
+"Plug 'lfv89/vim-interestingwords'
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -128,28 +147,55 @@ call plug#end()
 
 color gruvbox
 
-" coc
+"""""""
+" coc "
+"""""""
 let g:coc_global_extensions = [
             \    'coc-snippets',
+            \    'coc-marketplace',
             \    'coc-pairs',
             \    'coc-go',
             \    'coc-json',
             \    'coc-python',
+            \    'coc-vimlsp',
             \]
+
+" 提升响应速度
+set updatetime=100
+" 简化补全内容
+set shortmess+=c
+" TAB补全
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <C-o> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <C-o> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
 " 在保存时规范文件格式
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
-nnoremap <silent>W :call <SID>show_doc()<CR>
-
-function! s:show_doc()
-    if (index(['vim','help'],&filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
-
-nmap <F2> <Plug>(coc-rename)
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -159,6 +205,21 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" documentation
+nnoremap <silent> <LEADER>? :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
 
 
 " undotre
@@ -228,7 +289,7 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:rainbow_active = 1
 
 " tagbar
-nmap <F9> :TagbarToggle<CR>
+"nmap <F9> :TagbarToggle<CR>
 " 启动时自动focus
 let g:tagbar_autofocus = 1
 
@@ -245,12 +306,12 @@ let g:tagbar_type_ruby = {
 \ }
 
 " interestingwords
-nnoremap <silent> <leader>m :call InterestingWords('n')<cr>
-vnoremap <silent> <leader>m :call InterestingWords('v')<cr>
-nnoremap <silent> <leader>m :call UncolorAllWords()<cr>
+"nnoremap <silent> <leader>m :call InterestingWords('n')<cr>
+"vnoremap <silent> <leader>m :call InterestingWords('v')<cr>
+"nnoremap <silent> <leader>m :call UncolorAllWords()<cr>
 
-nnoremap <silent> n :call WordNavigation(1)<cr>
-nnoremap <silent> N :call WordNavigation(0)<cr>
+"nnoremap <silent> n :call WordNavigation(1)<cr>
+"nnoremap <silent> N :call WordNavigation(0)<cr>
 
 " multi_cursor
 let g:multi_cursor_use_default_mapping=0
