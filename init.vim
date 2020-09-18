@@ -44,6 +44,10 @@ set guifont=DroidSansMono_Nerd_Font:h11
 set fileformat=unix     "换行使用unix方式
 set updatecount=0       "不使用交换文件
 
+
+"使用系统剪贴板
+set clipboard=unnamedplus
+
 "缩进定义
 set shiftwidth=4
 set tabstop=4
@@ -141,6 +145,7 @@ Plug 'voldikss/vim-codelf'
 "Plug 'lfv89/vim-interestingwords'
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/vim-peekaboo'
 call plug#end()
 
 " ===================插件配置=======================
@@ -158,6 +163,7 @@ let g:coc_global_extensions = [
             \    'coc-json',
             \    'coc-python',
             \    'coc-vimlsp',
+            \    'coc-yank',
             \]
 
 " 提升响应速度
@@ -220,6 +226,7 @@ endfunction
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
+nnoremap <silent> <space>p  :<C-u>CocList -A --normal yank<cr>
 
 
 " undotre
@@ -305,7 +312,8 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 
-" interestingwords
+"" interestingwords
+"let g:interestingWordsDefaultMappings = 0
 "nnoremap <silent> <leader>m :call InterestingWords('n')<cr>
 "vnoremap <silent> <leader>m :call InterestingWords('v')<cr>
 "nnoremap <silent> <leader>m :call UncolorAllWords()<cr>
@@ -313,10 +321,10 @@ let g:tagbar_type_ruby = {
 "nnoremap <silent> n :call WordNavigation(1)<cr>
 "nnoremap <silent> N :call WordNavigation(0)<cr>
 
-" multi_cursor
-let g:multi_cursor_use_default_mapping=0
-" Default mapping
-let g:multi_cursor_next_key='<C-m>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+"" multi_cursor
+"let g:multi_cursor_use_default_mapping=1
+"" Default mapping
+"let g:multi_cursor_next_key='<C-m>'
+"let g:multi_cursor_prev_key='<C-p>'
+"let g:multi_cursor_skip_key='<C-x>'
+"let g:multi_cursor_quit_key='<Esc>'
