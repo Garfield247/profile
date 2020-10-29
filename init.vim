@@ -111,6 +111,25 @@ map tl :+tabnext<CR>
 " 快速翻页
 noremap J 10j
 noremap K 10k
+
+"autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
+autocmd Filetype * inoremap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
+autocmd Filetype * inoremap <buffer> ,w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
+autocmd Filetype markdown inoremap <buffer> ,n ---<Enter><Enter>
+autocmd Filetype markdown inoremap <buffer> ,b **** <++><Esc>F*hi
+autocmd Filetype markdown inoremap <buffer> ,s ~~~~ <++><Esc>F~hi
+autocmd Filetype markdown inoremap <buffer> ,i ** <++><Esc>F*i
+autocmd Filetype markdown inoremap <buffer> ,d `` <++><Esc>F`i
+autocmd Filetype markdown inoremap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
+autocmd Filetype markdown inoremap <buffer> ,m - [ ]
+autocmd Filetype markdown inoremap <buffer> ,p ![](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap <buffer> ,a [](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap <buffer> ,1 #<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,2 ##<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,3 ###<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,4 ####<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
+
 " 插件
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline' " vim状态栏
@@ -128,6 +147,9 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'irblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 
+"Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 Plug 'mbbill/undotree'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-fugitive'
@@ -136,16 +158,21 @@ Plug 'godlygeek/tabular'
 Plug 'luochen1990/rainbow'
 "Plug 'plasticboy/vim-markdown'
 "Plug 'suan/vim-instant-markdown'
-"Plug 'majutsushi/tagbar'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'majutsushi/tagbar'
 "Plug 'Lokaltog/vim-easymotion'
 Plug 'fatih/vim-go'
 Plug 'itchyny/vim-cursorword'
 Plug 'tpope/vim-surround'
 Plug 'voldikss/vim-codelf'
-"Plug 'lfv89/vim-interestingwords'
+Plug 'zivyangll/git-blame.vim'
+Plug 'lfv89/vim-interestingwords'
+Plug 'mg979/vim-xtabline'
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-peekaboo'
+
 call plug#end()
 
 " ===================插件配置=======================
@@ -157,11 +184,16 @@ color gruvbox
 """""""
 let g:coc_global_extensions = [
             \    'coc-snippets',
+            \    'coc-explorer',
             \    'coc-marketplace',
             \    'coc-pairs',
             \    'coc-go',
             \    'coc-json',
             \    'coc-python',
+            \    'coc-sh',
+            \    'coc-prettier',
+            \    'coc-html',
+            \    'coc-css',
             \    'coc-vimlsp',
             \    'coc-yank',
             \]
@@ -199,8 +231,8 @@ else
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
-" 在保存时规范文件格式
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" 规范文件格式
+nmap <leader>fm :CocCommand prettier.formatFile<CR>
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -222,6 +254,8 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+autocmd BufNewFile * :CocCommand template.templateTop
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
@@ -256,7 +290,7 @@ let g:NERDTreeSize=30
 ""窗口是否显示行号
 let g:NERDTreeShowLineNumbers=1
 ""不显示隐藏文件
-let g:NERDTreeHidden=1
+let g:NERDTreeHidden=0
 ""打开vim时如果没有文件自动打开NERDTree
 autocmd vimenter * if !argc()|NERDTree|endif
 ""当NERDTree为剩下的唯一窗口时自动关闭
@@ -296,7 +330,7 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:rainbow_active = 1
 
 " tagbar
-"nmap <F9> :TagbarToggle<CR>
+nmap <F9> :TagbarToggle<CR>
 " 启动时自动focus
 let g:tagbar_autofocus = 1
 
@@ -312,9 +346,12 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 
-"" interestingwords
-"let g:interestingWordsDefaultMappings = 0
-"nnoremap <silent> <leader>m :call InterestingWords('n')<cr>
+" git-blame
+nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
+
+" interestingwords
+let g:interestingWordsDefaultMappings = 0
+nnoremap <silent> <leader>gl :call InterestingWords('n')<cr>
 "vnoremap <silent> <leader>m :call InterestingWords('v')<cr>
 "nnoremap <silent> <leader>m :call UncolorAllWords()<cr>
 
@@ -328,3 +365,10 @@ let g:tagbar_type_ruby = {
 "let g:multi_cursor_prev_key='<C-p>'
 "let g:multi_cursor_skip_key='<C-x>'
 "let g:multi_cursor_quit_key='<Esc>'
+"
+
+"markdown preview
+let g:mkdp_path_to_chrome='/usr/bin/google-chrome'
+let g:mkdp_auto_close=0
+nmap <F7> <Plug>MarkdownPreview
+nmap <F8> <Plug>StopMarkdownPreview
