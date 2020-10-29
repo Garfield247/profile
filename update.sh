@@ -5,6 +5,7 @@ echo $thisdir
 declare -a profiles
 profiles=(
     [nvim]="$HOME/.config/nvim/init.vim"
+    [cocconfig]="$HOME/.config/nvim/coc-settings.json"
     #[tmux]="$HOME/.tmux.conf"
     #[zshrc]="$HOME/.zshrc"
     #[bashrc]="$HOME/.bash_profile"
