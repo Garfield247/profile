@@ -173,7 +173,7 @@ Plug 'rizzatti/dash.vim' "dash api文档
 Plug 'scrooloose/nerdtree' "文件浏览器
 Plug 'Xuyuanp/nerdtree-git-plugin' "nerdtree Git插件
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " nerdtree 高亮
-Plug 'ryanoasis/vim-devicons' "文件图标
+"Plug 'ryanoasis/vim-devicons' "文件图标
 
 " 快速操作
 Plug 'scrooloose/nerdcommenter' "快速注释/解除注释
