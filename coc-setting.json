@@ -5,6 +5,12 @@
   "codeLens.enable": true,
 
   "coc.preferences.formatOnSaveFiletypes": ["json"],
+  "explorer.file.column.indent.indentLine": true,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.icon.enableNerdfont": false,
+  "explorer.file.column.git.showIgnored": true,
+  "explorer.keyMappingMode": "default",
+  "explorer.buffer.showHiddenBuffers": false,
   "languageserver": {
     "golang": {
       "command": "gopls",

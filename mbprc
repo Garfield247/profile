@@ -9,9 +9,6 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
 
-# vim
-alias nv="nvim"
-#alias vim="nvim"
 
 # colorls
 alias cls="colorls"
@@ -35,12 +32,13 @@ export CLASSPAHT=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=$JAVA_HOME/bin:$PATH
 
 # VIM
-export MYVIMRC=$HOME/.vimrc
+alias nv="nvim"
+alias vim="nvim"
+export VIMRC=$HOME/.vimrc
+export NVIMRC=$HOME/.config/nvim/init.vim
 
 # MYSQL
 export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
-alias vim="nvim"
-alias nv="nvim"
 
 #GO
 export GOPATH=$HOME/Documents/go

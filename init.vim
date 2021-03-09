@@ -52,7 +52,7 @@ filetype indent on
 filetype plugin on
 filetype plugin indent on
 set fileencodings=ucs-bom,UTF-8,GBK,BIG5,latin1
-set fileencoding=UTF-8
+"set fileencoding=UTF-8
 set guifont=DroidSansMono_Nerd_Font:h11
 set fileformat=unix     "换行使用unix方式
 set updatecount=0       "不使用交换文件
@@ -170,9 +170,9 @@ Plug 'mattn/emmet-vim' "html补全
 Plug 'rizzatti/dash.vim' "dash api文档
 
 " 文件浏览器
-Plug 'scrooloose/nerdtree' "文件浏览器
-Plug 'Xuyuanp/nerdtree-git-plugin' "nerdtree Git插件
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " nerdtree 高亮
+"Plug 'scrooloose/nerdtree' "文件浏览器
+"Plug 'Xuyuanp/nerdtree-git-plugin' "nerdtree Git插件
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " nerdtree 高亮
 "Plug 'ryanoasis/vim-devicons' "文件图标
 
 " 快速操作
@@ -229,6 +229,7 @@ let g:coc_global_extensions = [
             \    'coc-marketplace',
             \    'coc-pairs',
             \    'coc-go',
+            \    'coc-sql',
             \    'coc-json',
             \    'coc-python',
             \    'coc-sh',
@@ -236,10 +237,11 @@ let g:coc_global_extensions = [
             \    'coc-html',
             \    'coc-css',
             \    'coc-vimlsp',
+            \    'coc-tsserver',
             \    'coc-yank',
             \    'coc-translator',
-            \    'coc-template',
             \]
+
 
 " 提升响应速度
 set updatetime=100
@@ -304,8 +306,30 @@ nnoremap <silent> <space>p  :<C-u>CocList -A --normal yank<cr>
 nnoremap <silent> <LEADER>tp :CocCommand translator.popup<CR>
 "" 替换翻译
 nnoremap <silent> <LEADER>tr :CocCommand translator.replace<CR>
+"" coc-exploer
+nmap <leader>ce :CocCommand explorer<CR>
+"" coc-snippets
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
 
 "vim-go
+"关闭go的文档快捷键
+let g:go_doc_keywordprg_enabled = 0
 "go代码高亮配置
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -313,7 +337,8 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
-
+" 运行当前go文件
+autocmd FileType go nmap <Leader>r :w<CR> :!go run %<CR>
 
 " undotre
 set undofile
@@ -330,62 +355,62 @@ let g:indentLine_noConcealCursor = 1
 let g:indentLine_color_term = 0
 let g:indentLine_char = '|'
 
-" nerdtrer
-""将F2设置为开关NERDTree的快捷键
-map tt :NERDTreeToggle<CR>
-""修改树的显示图标
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '-'
-""窗口位置
-let g:NERDTreeWinPos='left'
-""窗口尺寸
-let g:NERDTreeSize=30
-""窗口是否显示行号
-let g:NERDTreeShowLineNumbers=1
-""不显示隐藏文件
-let g:NERDTreeHidden=0
-""打开vim时如果没有文件自动打开NERDTree
-autocmd vimenter * if !argc()|NERDTree|endif
-""当NERDTree为剩下的唯一窗口时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-""打开vim时自动打开NERDTree并将光标移动到右侧编辑区
-autocmd vimenter * NERDTree
-wincmd w
-autocmd vimenter * wincmd w
-" 在终端启动vim时，共享NERDTree
-let g:nerdtree_tabs_open_on_console_startup=1
-" 忽略一下文件的显示
-let NERDTreeIgnore=['\.pyc','\~$','\.swp']
-set guifont=DroidSansMono_Nerd_Font:h11
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-"vnoremap <LEADER>z <plug>NERDCommenterToggle
-"noremap <LEADER>z <plug>NERDCommenterToggle
+"" nerdtrer
+"""将F2设置为开关NERDTree的快捷键
+"map tt :NERDTreeToggle<CR>
+"""修改树的显示图标
+"let g:NERDTreeDirArrowExpandable = '+'
+"let g:NERDTreeDirArrowCollapsible = '-'
+"""窗口位置
+"let g:NERDTreeWinPos='left'
+"""窗口尺寸
+"let g:NERDTreeSize=30
+"""窗口是否显示行号
+"let g:NERDTreeShowLineNumbers=1
+"""不显示隐藏文件
+"let g:NERDTreeHidden=0
+"""打开vim时如果没有文件自动打开NERDTree
+"autocmd vimenter * if !argc()|NERDTree|endif
+"""当NERDTree为剩下的唯一窗口时自动关闭
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"""打开vim时自动打开NERDTree并将光标移动到右侧编辑区
+"autocmd vimenter * NERDTree
+"wincmd w
+"autocmd vimenter * wincmd w
+"" 在终端启动vim时，共享NERDTree
+"let g:nerdtree_tabs_open_on_console_startup=1
+"" 忽略一下文件的显示
+"let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+"set guifont=DroidSansMono_Nerd_Font:h11
+"let g:NERDTreeFileExtensionHighlightFullName = 1
+"let g:NERDTreeExactMatchHighlightFullName = 1
+"let g:NERDTreePatternMatchHighlightFullName = 1
+""vnoremap <LEADER>z <plug>NERDCommenterToggle
+""noremap <LEADER>z <plug>NERDCommenterToggle
 
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✹',
-                \ 'Staged'    :'✚',
-                \ 'Untracked' :'✭',
-                \ 'Renamed'   :'➜',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'✖',
-                \ 'Dirty'     :'✗',
-                \ 'Ignored'   :'☒',
-                \ 'Clean'     :'✔︎',
-                \ 'Unknown'   :'?',
-                \ }
+"let g:NERDTreeGitStatusIndicatorMapCustom = {
+                "\ 'Modified'  :'✹',
+                "\ 'Staged'    :'✚',
+                "\ 'Untracked' :'✭',
+                "\ 'Renamed'   :'➜',
+                "\ 'Unmerged'  :'═',
+                "\ 'Deleted'   :'✖',
+                "\ 'Dirty'     :'✗',
+                "\ 'Ignored'   :'☒',
+                "\ 'Clean'     :'✔︎',
+                "\ 'Unknown'   :'?',
+                "\ }
 
-" dev-icon
-augroup nerdtreedisablecursorline
-	autocmd!
-	autocmd FileType nerdtree setlocal nocursorline
-augroup end
-let NERDTreeHighlightCursorline = 1
-let g:webdevicons_enable_nerdtree = 0
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:WebDevIconsUnicodeDecorateFileNodes = 1
+"" dev-icon
+"augroup nerdtreedisablecursorline
+	"autocmd!
+	"autocmd FileType nerdtree setlocal nocursorline
+"augroup end
+"let NERDTreeHighlightCursorline = 1
+"let g:webdevicons_enable_nerdtree = 0
+"let g:webdevicons_conceal_nerdtree_brackets = 1
+"let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+"let g:WebDevIconsUnicodeDecorateFileNodes = 1
 
 
 " rainbow
@@ -463,7 +488,3 @@ autocmd FileType html,css EmmetInstall
 let g:vim_markdown_folding_disabled = 1
 nnoremap <silent> <leader>tm :call TableModeToggle<cr>
 
-
-"" 使用 tab 切换下一个触发点，shit+tab 上一个触发点
-let g:UltiSnipsJumpForwardTrigger="<C-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-k>"
