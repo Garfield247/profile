@@ -32,10 +32,12 @@ export CLASSPAHT=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=$JAVA_HOME/bin:$PATH
 
 # VIM
+alias vi="vim"
 alias nv="nvim"
 alias vim="nvim"
 export VIMRC=$HOME/.vimrc
 export NVIMRC=$HOME/.config/nvim/init.vim
+export EDITOR=nvim
 
 # MYSQL
 export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
@@ -43,7 +45,7 @@ export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
 #GO
 export GOPATH=$HOME/Documents/go
 export PATH=$GOPATH/bin:$PATH
-export GOPROXY=https://mirrors.aliyun.com/goproxy/
+export GOPROXY=https://goproxy.cn,direct
 export GOSUMDB=off
 
 #maven
@@ -83,3 +85,9 @@ alias gpl="git pull"
 
 # thefuck
 alias f="fuck"
+
+# NPM
+
+export PATH="/usr/local/opt/curl/bin:$PATH"
+
+export Darsing_CONFIG="development"
