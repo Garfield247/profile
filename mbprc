@@ -46,8 +46,7 @@ export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
 export GOPATH=$HOME/Documents/go
 export PATH=$GOPATH/bin:$PATH
 export GOPROXY=https://goproxy.cn,direct
-export GOSUMDB=off
-
+#
 #maven
 export M2_HOME=/usr/local/Cellar/maven/3.6.1/libexec
 export PATH=$PATH:$M2_HOME/bin
@@ -91,3 +90,6 @@ alias f="fuck"
 export PATH="/usr/local/opt/curl/bin:$PATH"
 
 export Darsing_CONFIG="development"
+
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+export PATH="/usr/local/opt/go@1.17/bin:$PATH"
